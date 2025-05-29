@@ -1,4 +1,6 @@
 from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp.prompts import base
+
 import os
 import shutil
 
@@ -55,6 +57,16 @@ async def rmdir(dir_name: str) -> str:
     except Exception as e:
         # 기타 예외 처리
         return f"디렉터리 '{full_path}' 삭제 중 예상치 못한 오류 발생: {e}"
+    
+@mcp.prompt()
+def default_prompt(message: str) -> list[base.Message]:
+    return [
+        base.AssistantMessage(
+            "You are a helpful linux command executor. \n"
+            "Please clearly organize and return the results of linux command execution."
+        ),
+        base.UserMessage(message),
+    ]
     
 
 if __name__ == "__main__":
